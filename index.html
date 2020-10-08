@@ -98,27 +98,30 @@
 
 		embedded_svc.settings.extraPrechatFormDetails = [{"label":"Asunto", "transcriptFields": ["Reason__c"]}];
 		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
-		embedded_svc.settings.entryFeature = 'LiveAgent';
-		window.embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
-		  // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
-		  // Returns a valid button ID.
-			if (prechatFormData[2].value === "Mi cuenta") {
-				return params.buttonId_Visitors;
-				} else {
-				return params.buttonId_LoggedIn;
-		  	}
-		};
-		
+		embedded_svc.settings.entryFeature = 'LiveAgent' ;
+		var params = {fondeado: true, 
+			      registro_broker_completo: true,  
+			      buttonId_Cliente: "57346000000LO0a", 
+			      buttonId_CuentaAprobada: "57346000000LO0Q", 
+			      buttonId_Visitors: "57346000000LO0V", 
+			      buttonId_Registro: "57346000000LO0L"}
 		
 		window.embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
-		  // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
-		  // Returns a valid button ID.
-			if (email != null) {
-				return params.buttonId_LoggedIn;
+		      // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+		      // Returns a valid button ID.
+		      if (email != null) {
+				if (params.fondeado) {
+					return params.buttonId_Cliente;
+				} else if (params.registro_broker_completo) {
+					 return params.buttonId_CuentaAprobada;
 				} else {
+					 return params.buttonId_Registro;
+				}
+		       } else {
 				return params.buttonId_Visitors;
-		  	}
-		};
+		      }
+		    };
+
 
 		embedded_svc.init(
 			'https://quiena--quienatest.my.salesforce.com',
